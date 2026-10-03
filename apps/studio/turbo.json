@@ -1,0 +1,34 @@
+{
+  "extends": [
+    "//"
+  ],
+  "tasks": {
+    "build": {
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**"
+      ]
+    },
+    "test": {
+      "cache": false
+    },
+    "dev": {
+      "passThroughEnv": [
+        "HOPLITE_API_URL",
+        "HOPLITE_SERVICE_KEY",
+        "HOPLITE_PREVIEW_TRANSPORT_URL",
+        "STUDIO_*",
+        "AWS_*"
+      ]
+    },
+    "start": {
+      "passThroughEnv": [
+        "HOPLITE_API_URL",
+        "HOPLITE_SERVICE_KEY",
+        "HOPLITE_PREVIEW_TRANSPORT_URL",
+        "STUDIO_*",
+        "AWS_*"
+      ]
+    }
+  }
+}

@@ -1,0 +1,63 @@
+# Example Fly.io configuration for Site Studio. Copy it to fly.toml, replace
+# every <placeholder>, and see README.md, "Deploy". Nothing here is specific
+# to Fly except this file and STUDIO_TRUST_PROXY: the same Docker image runs
+# on any host that offers one long-lived container and a persistent volume.
+#
+# One machine only: metadata and local-file releases live on its volume, and
+# the studio's in-process polling assumes a single writer.
+
+app = "<your-fly-app>"
+primary_region = "<region>"
+kill_signal = "SIGTERM"
+kill_timeout = "30s"
+
+[build]
+  dockerfile = "Dockerfile"
+
+# Non-secret configuration. Set the secrets with `fly secrets set`:
+# HOPLITE_API_URL, HOPLITE_SERVICE_KEY, STUDIO_ACCESS_PASSWORD and
+# STUDIO_SESSION_SECRET.
+[env]
+  NODE_ENV = "production"
+  STUDIO_LISTEN_HOST = "0.0.0.0"
+  STUDIO_LISTEN_PORT = "8080"
+  STUDIO_DATA_DIR = "/data"
+  STUDIO_TRUST_PROXY = "fly"
+  # The three public origins. All arrive on port 8080; the server routes by
+  # Host header. They must be subdomains of one registrable domain. Change
+  # them together with the certificates and DNS records.
+  STUDIO_ORIGIN = "https://studio.example.com"
+  STUDIO_PREVIEW_ORIGIN = "https://preview.studio.example.com"
+  STUDIO_SITES_ORIGIN = "https://sites.studio.example.com"
+
+[[mounts]]
+  source = "studio_data"
+  destination = "/data"
+  initial_size = "1gb"
+
+# One HTTP service carries all three hostnames: the proxy terminates TLS for
+# each certificate on 443 and forwards to the same internal port.
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # Always on: builds, checks and preview idle deadlines run in the studio's
+  # background loop, which a stopped or suspended machine would pause.
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 250
+
+  [[http_service.checks]]
+    grace_period = "60s"
+    interval = "30s"
+    timeout = "5s"
+    method = "GET"
+    path = "/healthz"
+
+[[vm]]
+  size = "shared-cpu-2x"
+  memory = "2gb"

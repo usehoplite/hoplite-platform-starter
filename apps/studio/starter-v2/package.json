@@ -1,0 +1,24 @@
+{
+  "name": "studio-site-starter",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0 --port 3000",
+    "check": "astro check",
+    "build": "astro check && astro build"
+  },
+  "dependencies": {
+    "astro": "7.3.5",
+    "@astrojs/check": "0.9.10",
+    "typescript": "5.9.3",
+    "tailwindcss": "4.3.3",
+    "@tailwindcss/vite": "4.3.3",
+    "motion": "13.4.3",
+    "@lucide/astro": "1.48.0",
+    "embla-carousel": "8.6.0"
+  }
+}

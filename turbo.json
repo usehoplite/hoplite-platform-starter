@@ -1,0 +1,48 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**"
+      ],
+      "env": [
+        "HOPLITE_API_URL",
+        "HOPLITE_SERVICE_KEY"
+      ]
+    },
+    "typecheck": {},
+    "test": {
+      "cache": false
+    },
+    "start": {
+      "cache": false,
+      "persistent": true
+    },
+    "test:browser": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "test:lifecycle": {
+      "dependsOn": [
+        "build"
+      ],
+      "cache": false
+    },
+    "test:storage": {
+      "dependsOn": [
+        "build"
+      ],
+      "cache": false,
+      "passThroughEnv": [
+        "STUDIO_RELEASE_*",
+        "STUDIO_STORAGE_ACCEPTANCE_*",
+        "AWS_*"
+      ]
+    }
+  }
+}

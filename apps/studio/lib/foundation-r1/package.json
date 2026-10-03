@@ -1,0 +1,6 @@
+{
+	"name": "studio-foundation-r1",
+	"private": true,
+	"description": "Original Studio-owned files kept byte-for-byte for websites saved before foundation revision 2. Not copied into website source.",
+	"dependencies": { "astro": "5.13.5" }
+}

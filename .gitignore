@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.turbo/
+.data/
+.env*
+!.env.example
+playwright-report/
+test-results/
+*.tsbuildinfo
+fly.toml
+next-env.d.ts

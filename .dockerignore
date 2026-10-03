@@ -1,0 +1,17 @@
+# Build context is the repository root. Keep local state, secrets and
+# build output out of the image.
+**/node_modules
+**/.next
+**/.turbo
+**/*.tsbuildinfo
+.data
+**/.env*
+**/playwright-report
+**/test-results
+apps/studio/tests
+Dockerfile
+.dockerignore
+fly*.toml
+.github
+*.md
+!NOTICE.md
