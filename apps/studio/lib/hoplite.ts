@@ -95,8 +95,12 @@ export class Hoplite {
 				"The local Hoplite connection is not configured. Set HOPLITE_API_URL and HOPLITE_SERVICE_KEY in .env or the server's environment.",
 			);
 		for (let attempt = 1; ; attempt++) {
-			const wait = this.resumeAt - Date.now();
-			if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
+			let wait = this.resumeAt - Date.now();
+			while (wait > 0) {
+				await new Promise((resolve) => setTimeout(resolve, wait));
+				// An in-flight request can extend the cooldown while we wait.
+				wait = this.resumeAt - Date.now();
+			}
 			try {
 				return await this.send(path, body, operationId, timeoutMs);
 			} catch (error) {
